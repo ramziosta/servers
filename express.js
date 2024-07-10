@@ -54,9 +54,10 @@ app.get('/mags', startTime, (req, res) => {
 });
 
 // Error handling middleware
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
     console.error('Error handling request:', err);
     res.status(500).send('Internal Server Error');
+    next();
 });
 
 // Start the server on port 3000
