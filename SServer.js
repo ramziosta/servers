@@ -1,25 +1,25 @@
-/*
-const express = require('express');
 
-const { body, validationResult } = require('express-validator');
-const bodyParser = require('body-parser');
-const path = require('path');
-const ejs = require('ejs');
-const routes = require('./routes/routes');
-const app = express();
+// const express = require('express');
+//
+ const { body, validationResult } = require('express-validator');
+// const bodyParser = require('body-parser');
+// const path = require('path');
+// const ejs = require('ejs');
+// const routes = require('./routes/routes');
+// const app = express();
 
 // Sets the ejs configuration
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+// app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'ejs');
 
 //routes
-app.use("/", routes)
+// app.use("/", routes)
 
 // Middleware to log the request start time
-const startTime = (req, res, next) => {
-    console.log(`Request ${req.url} ${req.method} started at: ${new Date()}`);
-    next();
-};
+// const startTime = (req, res, next) => {
+//     console.log(`Request ${req.url} ${req.method} started at: ${new Date()}`);
+//     next();
+// };
 
 // Middleware to parse JSON and URL-encoded bodies
 // app.use(express.json());
@@ -31,48 +31,48 @@ const startTime = (req, res, next) => {
 // app.use(bodyParser.text({ type: 'application/javascript' }));
 
 // Custom middleware to handle different content types
-app.use((req, res, next) => {
-    const contentType = req.headers['content-type'];
-
-    if (req.method === 'POST' || req.method === 'PUT' || req.method === 'PATCH') {
-        if (contentType === 'application/json' ||
-            contentType === 'application/x-www-form-urlencoded' ||
-            contentType === 'text/html' ||
-            contentType === 'application/javascript') {
-            req.body = req.body;
-        } else {
-            // Unsupported media type
-            res.status(415).send('Unsupported Media Type');
-            return;
-        }
-    }
-
-    next();
-});
+// app.use((req, res, next) => {
+//     const contentType = req.headers['content-type'];
+//
+//     if (req.method === 'POST' || req.method === 'PUT' || req.method === 'PATCH') {
+//         if (contentType === 'application/json' ||
+//             contentType === 'application/x-www-form-urlencoded' ||
+//             contentType === 'text/html' ||
+//             contentType === 'application/javascript') {
+//             req.body = req.body;
+//         } else {
+//             // Unsupported media type
+//             res.status(415).send('Unsupported Media Type');
+//             return;
+//         }
+//     }
+//
+//     next();
+// });
 
 // Route for the home page
-app.get('/', startTime, (req, res) => {
-    res.status(202).send('<h1>Hello, hello, World!</h1>');
-});
+// app.get('/', startTime, (req, res) => {
+//     res.status(202).send('<h1>Hello, hello, World!</h1>');
+// });
 
 // Route for /books with a middleware called startTime
-app.get('/books', startTime, (req, res) => {
-    res.status(200).send(`${req.url} ${req.method} started at: ${new Date()}`);
-});
+// app.get('/books', startTime, (req, res) => {
+//     res.status(200).send(`${req.url} ${req.method} started at: ${new Date()}`);
+// });
 
 // Route for /mags with startTime middleware
-app.get('/mags', startTime, (req, res) => {
-    res.status(200).send(`${req.url} ${req.method} started at: ${new Date()}`);
-});
-
-app.post('/user', (req, res) => {
-    const data = { name: 'John', age: 30, hobbies: ["Swimming", "Running", "Hiking"], loggedIn: false };
-    res.render('index', { data });
-});
-
-const createUser = (name, email, age) => {
-    console.log('Creating user:', name, email, age);
-}
+// app.get('/mags', startTime, (req, res) => {
+//     res.status(200).send(`${req.url} ${req.method} started at: ${new Date()}`);
+// });
+//
+// app.post('/user', (req, res) => {
+//     const data = { name: 'John', age: 30, hobbies: ["Swimming", "Running", "Hiking"], loggedIn: false };
+//     res.render('index', { data });
+// });
+//
+// const createUser = (name, email, age) => {
+//     console.log('Creating user:', name, email, age);
+// }
 
 const registerValidation = [
     body('name', 'Name doesn\'t exist').exists(),

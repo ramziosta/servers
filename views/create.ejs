@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List of Files</title>
+</head>
+<body>
+
+
+<h1>Create a New File</h1>
+<form action="/create" method="post">
+    <label for="fileName">File Name:</label>
+    <input type="text" id="fileName" name="fileName" required>
+    <br>
+    <label for="fileContent">File Content:</label>
+    <textarea id="fileContent" name="fileContent" rows="4" required></textarea>
+    <br>
+    <button type="submit">Create File</button>
+</form>
+
+<script src="../public/scripts.js"></script>
+</body>
+</html>
