@@ -1,0 +1,14 @@
+{
+  "username": "MojoJojo",
+  "password": "Mojopassword",
+  "firstName": "Mojo",
+  "lastName": "Jojo",
+  "email": "mojo@gmail.com",
+  "loggedIn": true,
+  "age": 20,
+  "hobbies": [
+    "Music",
+    "Cooking",
+    "Reading"
+  ]
+}

@@ -1,13 +1,19 @@
+/*
 const express = require('express');
+
 const { body, validationResult } = require('express-validator');
 const bodyParser = require('body-parser');
+const path = require('path');
 const ejs = require('ejs');
-
+const routes = require('./routes/routes');
 const app = express();
 
 // Sets the ejs configuration
-app.set('views', './views');
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+//routes
+app.use("/", routes)
 
 // Middleware to log the request start time
 const startTime = (req, res, next) => {
@@ -16,13 +22,13 @@ const startTime = (req, res, next) => {
 };
 
 // Middleware to parse JSON and URL-encoded bodies
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
 
 // Middleware to handle raw text and HTML
-app.use(bodyParser.text({ type: 'text/plain' }));
-app.use(bodyParser.text({ type: 'text/html' }));
-app.use(bodyParser.text({ type: 'application/javascript' }));
+// app.use(bodyParser.text({ type: 'text/plain' }));
+// app.use(bodyParser.text({ type: 'text/html' }));
+// app.use(bodyParser.text({ type: 'application/javascript' }));
 
 // Custom middleware to handle different content types
 app.use((req, res, next) => {
@@ -102,3 +108,5 @@ const PORT = process.env.PORT || 3000;
 const server = app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+
+*/

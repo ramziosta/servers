@@ -1,83 +1,30 @@
-const http = require("http");
-const url = require('url');
+const express = require('express');
+const bodyParser = require('body-parser');
+const path = require('path');
+const routes = require('./routes/router');  // Make sure the path matches your project structure
+const app = express();
 
-const server = http.createServer((req, res) => {
-    // Log the request method and URL
-    console.log(`🚀 ${req.method} ${req.url}`);
-    res.setHeader('Content-Type', 'text/html');
+// Sets the ejs configuration
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 
-    // Parse the URL to get query parameters
-    const parsedUrl = url.parse(req.url, true);
-    const pathname = parsedUrl.pathname;
-    const query = parsedUrl.query;
+// Middleware to parse JSON and URL-encoded bodies
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-    if (req.method === 'POST') {
-        let data = [];
+// Use the routes from the router module
+app.use('/', routes);
 
-        req.on('data', (chunk) => {
-            data.push(chunk);
-        }).on('end', () => {
-            const bodyString = Buffer.concat(data).toString();
-            const body = Object.fromEntries(new URLSearchParams(bodyString));
-
-            res.statusCode = 200;
-            res.write('<h1>POST Data Received</h1>');
-            res.write('<ul>');
-            for (const param in body) {
-                res.write(`<li>${param}: ${body[param]}</li>`);
-            }
-            res.write('</ul>');
-
-            // Use query parameters if present
-            if (Object.keys(query).length > 0) {
-                res.write('<h2>Query Parameters:</h2><ul>');
-                for (const param in query) {
-                    res.write(`<li>${param}: ${query[param]}</li>`);
-                }
-                res.write('</ul>');
-            }
-
-            res.end('Response end message');
-        });
-    } else if (req.method === 'GET' && pathname.startsWith('/books')) {
-        res.statusCode = 200;
-
-        // Check for a specific book ID
-        const bookId = pathname.split('/books/')[1];
-        if (bookId) {
-            res.write(`<h1>Book ID: ${bookId}</h1>`);
-        }
-
-        // Use query parameters if present
-        if (Object.keys(query).length > 0) {
-            res.write('<h2>Query Parameters:</h2><ul>');
-            for (const param in query) {
-                res.write(`<li>${param}: ${query[param]}</li>`);
-            }
-            res.write('</ul>');
-        }
-
-        res.end('Response end message');
-    } else {
-        // Handle other paths
-        if (pathname === "/") {
-            res.statusCode = 200;
-            res.write('<h1 style="color: red;">Home</h1>');
-        } else if (pathname === "/about") {
-            res.statusCode = 200;
-            res.write('<h1>About</h1>');
-        } else if (pathname === "/work") {
-            res.statusCode = 200;
-            res.write('<h1>Work</h1>');
-        } else {
-            res.statusCode = 404;
-            res.write('<h1>404 Page not found</h1>');
-        }
-        res.end('Response end message');
-    }
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error('Error handling request:', err);
+    res.status(500).send('Internal Server Error');
+    next();
 });
 
 // Start the server on port 3000
-server.listen(3000, () => {
-    console.log('🔋 Server running at http://localhost:3000/');
+const PORT = process.env.PORT || 3000;
+
+const server = app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
