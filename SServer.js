@@ -1,7 +1,7 @@
 
 // const express = require('express');
 //
- const { body, validationResult } = require('express-validator');
+//const { body, validationResult } = require('express-validator');
 // const bodyParser = require('body-parser');
 // const path = require('path');
 // const ejs = require('ejs');
@@ -74,39 +74,39 @@
 //     console.log('Creating user:', name, email, age);
 // }
 
-const registerValidation = [
-    body('name', 'Name doesn\'t exist').exists(),
-    body('email', 'Invalid email').exists().isEmail(),
-    body('birthday').optional().isDate(),
-    body('age').optional().isInt()
-]
+// const registerValidation = [
+//     body('name', 'Name doesn\'t exist').exists(),
+//     body('email', 'Invalid email').exists().isEmail(),
+//     body('birthday').optional().isDate(),
+//     body('age').optional().isInt()
+// ]
 
-app.post('/register', registerValidation, (req, res) => {
-    console.log('POST Data Received');
-    console.log(req.body);  // Log the request body to see the incoming data
-
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    }
-
-    const { name, email, age } = req.body;
-    createUser(name, email, age);
-    res.status(201).send('User registered successfully');
-})
+// app.post('/register', registerValidation, (req, res) => {
+//     console.log('POST Data Received');
+//     console.log(req.body);  // Log the request body to see the incoming data
+//
+//     const errors = validationResult(req);
+//     if (!errors.isEmpty()) {
+//         return res.status(400).json({ errors: errors.array() });
+//     }
+//
+//     const { name, email, age } = req.body;
+//     createUser(name, email, age);
+//     res.status(201).send('User registered successfully');
+// })
 
 // Error handling middleware
-app.use((err, req, res, next) => {
-    console.error('Error handling request:', err);
-    res.status(500).send('Internal Server Error');
-    next();
-});
+// app.use((err, req, res, next) => {
+//     console.error('Error handling request:', err);
+//     res.status(500).send('Internal Server Error');
+//     next();
+// });
+//
+// // Start the server on port 3000
+// const PORT = process.env.PORT || 3000;
+//
+// const server = app.listen(PORT, () => {
+//     console.log(`Server is running on port ${PORT}`);
+// });
 
-// Start the server on port 3000
-const PORT = process.env.PORT || 3000;
 
-const server = app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
-
-*/

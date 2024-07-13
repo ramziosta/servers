@@ -60,18 +60,18 @@ router.post('/create', requestTime, registerValidation, (req, res) => {
 });
 
 // Route for displaying the file content
-router.get('/details', requestTime, (req, res) => {
-    const { fileName } = req.query;
+router.get('/detail', requestTime, (req, res) => {
+    const { fileName } = req.query; // Use req.query to get query parameters
+
+    // Check if fileName exists in the query parameters
     if (!fileName) {
         return res.status(400).send('File name is required');
     }
 
     const filePath = path.join(__dirname, '../data', fileName);
-
-    // Log the file path for debugging
     console.log(`Reading file from path: ${filePath}`);
 
-    // Check if the file exists
+    // Check if the file exists and is readable
     fs.access(filePath, fs.constants.F_OK | fs.constants.R_OK, (err) => {
         if (err) {
             console.error('File does not exist or is not readable:', err);
@@ -84,9 +84,8 @@ router.get('/details', requestTime, (req, res) => {
                 console.error('Error reading file:', err);
                 return res.status(500).send('Internal Server Error');
             }
-            res.render('details', { fileContent });
+            res.render('detail', { fileContent });
         });
     });
 });
-
 module.exports = router;

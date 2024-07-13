@@ -10,13 +10,20 @@
 <% if (files) { %>
     <ul>
         <% files.forEach(file => { %>
-            <li  class="file-item" data-file="<%= file %>"><button onclick="displayContent()" ><%= file %></button></li>
+            <li class="file-item" data-file="<%= file %>">
+                <button onclick="displayContent('<%= file %>')"><%= file %></button>
+            </li>
         <% }); %>
     </ul>
 <% } else { %>
     <p>No Files Found</p>
 <% } %>
 
-<script src="../public/scripts.js"></script>
+<script >
+    function displayContent(fileName) {
+        window.location.href = `/details?fileName=${encodeURIComponent(fileName)}`;
+        console.log("clicked:" + fileName)
+    }
+</script>
 </body>
 </html>
