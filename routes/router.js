@@ -1,20 +1,10 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
-const { body, validationResult } = require('express-validator');
 const router = express.Router();
 
-// Middleware to log the request start time
-const requestTime = (req, res, next) => {
-    console.log(`Request ${req.url} ${req.method} request made on: ${new Date()}`);
-    next();
-};
-
-// Middleware to check if the user entered the file name  and the file content
-const registerValidation = [
-    body('fileName', 'File name is required').exists(),
-    body('fileContent', 'File content is required').exists()
-]
+//imports the middlewares
+const { validationResult, requestTime, createValidation, inputValidation } = require('../middleware/middleware');
 
 // Route for the home page listing all files
 router.get('/', requestTime, (req, res) => {
@@ -34,7 +24,7 @@ router.get('/create', requestTime, (req, res) => {
 });
 
 // Route to create a new file
-router.post('/create', requestTime, registerValidation, (req, res) => {
+router.post('/create', requestTime, createValidation, (req, res) => {
     const { fileName, fileContent } = req.body;
     const filePath = path.join(__dirname, '../data', fileName);
 
@@ -86,6 +76,60 @@ router.get('/detail', requestTime, (req, res) => {
             }
             res.render('detail', { fileContent });
         });
+    });
+});
+
+// Route to update an existing file
+router.put('/update', requestTime, inputValidation, (req, res) => {
+    const { fileName, newFileContent } = req.body;
+
+    // Check for validation errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    const filePath = path.join(__dirname, '../data', fileName);
+
+    // Check if the file exists
+    if (!fs.existsSync(filePath)) {
+        return res.status(404).send('File not found.');
+    }
+
+    // Update the file content
+    fs.writeFile(filePath, newFileContent, (err) => {
+        if (err) {
+            console.error('Error updating file:', err);
+            return res.status(500).send('Internal Server Error');
+        }
+        res.status(200).send('File updated successfully.');
+    });
+});
+
+// Route to delete an existing file
+router.delete('/delete', requestTime, (req, res) => {
+    const { fileName} = req.body;
+
+    // Check for validation errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    const filePath = path.join(__dirname, '../data', fileName);
+
+    // Check if the file exists
+    if (!fs.existsSync(filePath)) {
+        return res.status(404).send('File not found.');
+    }
+
+    // Delete the file content
+    fs.unlink(filePath, (err) => {
+        if (err) {
+            console.error('Error deleting file:', err);
+            return res.status(500).send('Internal Server Error');
+        }
+        res.status(200).send('File deleted successfully.');
     });
 });
 
